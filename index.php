@@ -7,6 +7,7 @@
     $orden = $_GET['orden'] ?? '';
 
     $stmt = $conn ->prepare("call pa_listar_categorias()");
+    $stmt->execute();
     $categorias = $stmt->fetchAll();
     $stmt->closeCursor();
 
@@ -118,14 +119,8 @@
                                 <option value="precio_mayor" <?= $orden == 'precio_mayor' ? 'selected' : '' ?>>Mayor precio</option>
                                 <option value="mas_vendidos" <?= $orden == 'mas_vendidos' ? 'selected' : '' ?>>Más vendidos</option>
                                 <option value="mas_stock" <?= $orden == 'mas_stock' ? 'selected' : '' ?>>Mayor stock</option>
+                                <option value="stock_bajo" <?= $orden == 'stock_bajo' ? 'selected' : '' ?>>Stock bajo</option>
                             </select>
-                        </div>
-
-                        <div class="col-auto">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="stock_bajo" name="stock_bajo" value="1" <?= $stock_bajo == 1 ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="stock_bajo">Stock bajo</label>
-                            </div>
                         </div>
 
                         <div class="col-auto">
@@ -153,15 +148,9 @@
  
                                 <p class="text-muted small flex-grow-1"><?= $p['descripcion'] ?></p>
  
-                                <p class="fs-5 fw-bold mb-2">$ <?= number_format($p['precio'], 2) ?></p>
- 
-                                <div class="d-flex gap-2 mt-auto">
-                                    <input type="number" id="cantidad-<?= $p['id_productos'] ?>" value="1" min="1" class="form-control form-control-sm" style="width:70px;">
-                                    <button type="button" class="btn btn-warning btn-sm flex-grow-1"
-                                            onclick="agregarCarrito(<?= $p['id_productos'] ?>, '<?= $p['nombre'] ?>', <?= $p['precio'] ?>, document.getElementById('cantidad-<?= $p['id_productos'] ?>').value)">
-                                        Agregar
-                                    </button>
-                                </div>
+                                <p class="fs-5 fw-bold mb-2">$ <?= $p['precio'] ?></p>
+
+                                <button type="button" class="btn btn-warning btn-sm flex-grow-1">Agregar</button>
                             </div>
                         </div>
                     </div>
